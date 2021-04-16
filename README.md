@@ -148,7 +148,7 @@ pip install keras-rl
 If you use `FabricatioRL` in your research, you can cite it as follows:
 
 ```
-@misc{fabricatio-rl,
+@misc{rinciog2020fabricatio-rl,
     author = {Rinciog, Alexandru and Meyer Anne},
     title = {FabricatioRL},
     year = {2021},
