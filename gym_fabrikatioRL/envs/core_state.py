@@ -903,6 +903,19 @@ class State:
             finished_job_idx, self.system_time)
         return j_next
 
+    def job_finished(self, j_idx):
+        """
+        Checks whether the job finished by reading the corresponding remaining
+        operations tracker.
+
+        :param j_idx: The index of the job queried.
+        :return: True if there are no more operations remaining false otherwise.
+        """
+        if self.trackers.n_remaining_ops[j_idx] == 0:
+            return True
+        else:
+            return False
+
     def pull_to_view(self, j_next_idx, view_position):
         self.__job_view_to_global_idx[view_position] = j_next_idx
         self.__job_global_to_view_idx[j_next_idx] = view_position

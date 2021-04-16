@@ -194,7 +194,7 @@ class OperationFinishedEvent(Event):
         state.matrices.mark_finished(self.operation_index)
         # handle what happens to the operation graph
         j_idx = self.operation_index[0]  # global idx
-        if state.matrices.op_type[j_idx][-1] == 0:  # job just finished ^^
+        if state.job_finished(j_idx):  # job just finished ^^
             sim_manager.finish_job(state, j_idx)
             # only trigger next if no decision is necessary for this machine
             if not state.machines[self.machine_nr].has_queued_ops():
