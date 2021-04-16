@@ -1,16 +1,21 @@
 from gym_fabrikatioRL.envs.env_utils import create_folders
 from ast import literal_eval as make_tuple
 from json import dumps, dump
+from shutil import rmtree
+
 import os
 import pandas as pd
 import numpy as np
+from gym_fabrikatioRL.envs.core_state import State
 
 
 class SchedulingLogger:
-    def __init__(self, filepath, seed, state, simulation_manager):
+    def __init__(self, filepath, seed, state: State, simulation_manager):
         if filepath != '':
             self.log_dir = '/'.join(filepath.split('/')[:-1])
-            create_folders(self.log_dir)
+            if os.path.isdir(self.log_dir):
+                rmtree(self.log_dir)
+            create_folders(f'{self.log_dir}/dummy')
             # write logger object
             self.logfile = f'{filepath}_s{seed}.log'
             self.on = True
@@ -106,11 +111,11 @@ class SchedulingLogger:
         })
         f_name = f'{self.log_dir}/kpis/{str(self.state.n_steps)}_kpi_m.csv'
         machines_df.to_csv(create_folders(f_name), index=False, header=True)
-        w_remaining = self.state.matrices.trackers.job_remaining_time
-        work_time_last = self.state.matrices.trackers.job_last_processed_time
-        work_time_start = self.state.matrices.trackers.job_start_times
-        work_release_time = self.state.matrices.trackers.job_visible_dates
-        ops_left = self.state.matrices.trackers.n_remaining_ops
+        w_remaining = self.state.trackers.job_remaining_time
+        work_time_last = self.state.trackers.job_last_processed_time
+        work_time_start = self.state.trackers.job_start_times
+        work_release_time = self.state.trackers.job_visible_dates
+        ops_left = self.state.trackers.n_remaining_ops
         minimum_completion_time = np.array(
             [t + w_remaining[i] if ops_left[i] > 0 else work_time_last[i]
              for i in range(w_remaining.shape[0])])
