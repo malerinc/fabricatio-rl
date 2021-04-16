@@ -36,6 +36,13 @@ class UndefinedInputType(Exception):
                          f'{input_desc}.')
 
 
+class UndefinedLegalActionCall(Exception):
+    def __init__(self, opt_conf, sim_mode):
+        super().__init__(f'Cannot cal "get_legal_actions" in simulation mode '
+                         f'{sim_mode} with an optimizer conficuration of '
+                         f'{opt_conf}')
+
+
 class UndefinedOptimizerConfiguration(Exception):
     def __init__(self):
         err_string = f'The optimizer combination is not supported.'

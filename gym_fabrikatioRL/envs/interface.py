@@ -7,6 +7,7 @@ from gym_fabrikatioRL.envs.core_state import State
 from gym_fabrikatioRL.envs.interface_input import Input
 from gym_fabrikatioRL.envs.env_utils import UndefinedOptimizerConfiguration
 from gym_fabrikatioRL.envs.env_utils import UndefinedOptimizerTargetMode
+from gym_fabrikatioRL.envs.env_utils import UndefinedLegalActionCall
 from gym_fabrikatioRL.envs.env_utils import IllegalAction
 
 
@@ -86,12 +87,66 @@ class FabricatioRL(gym.Env):
 
     def get_legal_actions(self):
         """
-        Returns a list of legal actions as interpreted by the core module.
+        Returns a list of legal actions for each simulation mode and optimizer
+        mode combination.
 
-        :return: (legel_actions, legal_action_mask)
+        :return: The legal actions in this state.
         """
         # TODO: implement masking
-        return self.__core.state.legal_actions
+        toffs = self.__transport_decision_offset
+        n_to = self.__transport_optimizers.shape[0]
+        if self.__optimizer_configuration == 0:
+            if self.__core.state.scheduling_mode == 0:
+                return self.__core.state.legal_actions
+            else:
+                return [a + toffs - 1 for a in self.__core.state.legal_actions]
+        elif self.__optimizer_configuration in {1, 2}:
+            if self.__core.state.scheduling_mode == 0:
+                return self.__core.state.legal_actions
+            else:
+                raise UndefinedLegalActionCall(
+                    self.__optimizer_configuration,
+                    self.__core.state.scheduling_mode)
+        elif self.__optimizer_configuration == 3:
+            if self.__core.state.scheduling_mode == 0:
+                return self.__core.state.legal_actions
+            else:
+                return [toffs + i for i in range(n_to)]
+        elif self.__optimizer_configuration == 4:
+            if self.__core.state.scheduling_mode == 0:
+                raise UndefinedLegalActionCall(
+                    self.__optimizer_configuration,
+                    self.__core.state.scheduling_mode)
+            else:
+                return self.__core.state.legal_actions
+        elif self.__optimizer_configuration in {5, 6}:
+            raise UndefinedLegalActionCall(
+                self.__optimizer_configuration,
+                self.__core.state.scheduling_mode)
+        elif self.__optimizer_configuration == 7:
+            if self.__core.state.scheduling_mode == 0:
+                raise UndefinedLegalActionCall(
+                    self.__optimizer_configuration,
+                    self.__core.state.scheduling_mode)
+            else:
+                return list(range(n_to))
+        elif self.__optimizer_configuration == 8:
+            if self.__core.state.scheduling_mode == 0:
+                return list(range(toffs))
+            else:
+                return [a + toffs - 1 for a in self.__core.state.legal_actions]
+        elif self.__optimizer_configuration in {9, 10}:
+            if self.__core.state.scheduling_mode == 0:
+                return list(range(toffs))
+            else:
+                raise UndefinedLegalActionCall(
+                    self.__optimizer_configuration,
+                    self.__core.state.scheduling_mode)
+        else:  # self.__optimizer_configuration == 11:
+            if self.__core.state.scheduling_mode == 0:
+                return list(range(toffs))
+            else:
+                return [toffs + i for i in range(n_to)]
 
     def make_deterministic(self):
         """
