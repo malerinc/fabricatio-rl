@@ -53,18 +53,19 @@ Production scheduling setups are usually described using the parameters <img src
 
 <figure class="image" align="center">
         <img src="figures/fabRL_alphas.png" alt="dec_modes" width="500"/>
-    	<figcaption align="justify">Machine setup (<img src="https://render.githubusercontent.com/render/math?math=\alpha">) hierarchy in relationtion with FabrikatioRL. Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. The hatched rectangle represents our simulation.
+    	<figcaption align="justify">Machine setup (alpha) hierarchy in relationtion with FabrikatioRL. Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. The hatched rectangle represents our simulation.
     </figcaption>
 </figure>
 
+
 <figure align="center">
         <img src="figures/fabRL_betas.png" alt="dec_modes" width="500"/>
-    <figcaption align="justify">Additional constraints (<img src="https://render.githubusercontent.com/render/math?math=\beta">) covered by FabrikatioRL (hatched). Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. Note that currently, FabrikatioRL can only simulate <img src="https://render.githubusercontent.com/render/math?math=tr(\infty)"> environments.
+    <figcaption align="justify">Additional constraints (beta) covered by FabrikatioRL (hatched). Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. Note that currently, FabrikatioRL can only simulate <img src="https://render.githubusercontent.com/render/math?math=tr(\infty)"> environments.
     </figcaption>
 </figure>
 <figure align="center">
         <img src="figures/fabRL_gammas.png" alt="dec_modes" width="500"/>
-    <figcaption align="justify">Optimization goal (<img src="https://render.githubusercontent.com/render/math?math=\gamma">) intermediary variables covered by FabrikatioRL (hatched). Arrows indicate an "is used by" relation. Green rectangles are described by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles (red or green) were experimented with in RL literature. Boxes with gray filling represent intermediary variables.
+    <figcaption align="justify">Optimization goal (gamma) intermediary variables covered by FabrikatioRL (hatched). Arrows indicate an "is used by" relation. Green rectangles are described by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles (red or green) were experimented with in RL literature. Boxes with gray filling represent intermediary variables.
     </figcaption>
 </figure>
 
