@@ -51,36 +51,31 @@ The following trackers are maintained for optimization goal measurement (and rew
 
 Production scheduling setups are usually described using the parameters <img src="https://render.githubusercontent.com/render/math?math=\alpha, \beta"> for production setups and <img src="https://render.githubusercontent.com/render/math?math=\gamma"> for optimization goal [[1]](#1). The figures below present an overview of the parameters covered by our simulation. The images from [[2]](#2) were adapted for this purpose. There you can read more about the different setups in RL scheduling literature.
 
-<figure class="image" align="center">
-        <img src="figures/fabRL_alphas.png" alt="dec_modes" width="500"/>
-    	<figcaption align="justify">Machine setup (alpha) hierarchy in relationtion with FabrikatioRL. Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. The hatched rectangle represents our simulation.
-    </figcaption>
-</figure>
+   <p align="center">
+       <img src="figures/fabRL_alphas.png" alt="alphas" width="500"/>
+   </p>
+   Figure 1: Machine setup (<img src="https://render.githubusercontent.com/render/math?math=\alpha">) hierarchy in relationtion with FabrikatioRL. Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. The hatched rectangle represents our simulation.
 
+   <p align="center">
+       <img src="figures/fabRL_betas.png" alt="betas" width="500"/>
+   </p>
+   Figure 2: Additional constraints (<img src="https://render.githubusercontent.com/render/math?math=\beta">) covered by FabrikatioRL (hatched). Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. Note that currently, FabrikatioRL can only simulate <img src="https://render.githubusercontent.com/render/math?math=tr(\infty)"> environments.
 
-<figure align="center">
-        <img src="figures/fabRL_betas.png" alt="dec_modes" width="500"/>
-    <figcaption align="justify">Additional constraints (beta) covered by FabrikatioRL (hatched). Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. Note that currently, FabrikatioRL can only simulate <img src="https://render.githubusercontent.com/render/math?math=tr(\infty)"> environments.
-    </figcaption>
-</figure>
-<figure align="center">
-        <img src="figures/fabRL_gammas.png" alt="dec_modes" width="500"/>
-    <figcaption align="justify">Optimization goal (gamma) intermediary variables covered by FabrikatioRL (hatched). Arrows indicate an "is used by" relation. Green rectangles are described by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles (red or green) were experimented with in RL literature. Boxes with gray filling represent intermediary variables.
-    </figcaption>
-</figure>
-
-
-
+   <p align="center">
+       <img src="figures/fabRL_gammas.png" alt="gammas" width="500"/>
+   </p>
+   Figure 3: Optimization goal (<img src="https://render.githubusercontent.com/render/math?math=\gamma">) intermediary variables covered by FabrikatioRL (hatched). Arrows indicate an "is used by" relation. Green rectangles are described by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles (red or green) were experimented with in RL literature. Boxes with gray filling represent intermediary variables.
 
 ### MDP Features
 Agents are tasked with decision making (mainly) when operation processing finishes on  machines. The simulation supports the configuration of the following production scheduling MDP components:
 1. Decisions
-    - [x] Operation sequencing on machines (What operation is picked from the buffer?)
-    - [x] Job transport (To which downstream machine is the job sent?)
-    - [ ] Transport vehicle selection (Which transport resource carries the operation?)
-    <p align="center">
-    	<img src="figures/decisions_v2-1.png" alt="decisions" width="700"/>
-    </p>
+   - [x] Operation sequencing on machines (What operation is picked from the buffer?)
+   - [x] Job transport (To which downstream machine is the job sent?)
+   - [ ] Transport vehicle selection (Which transport resource carries the operation?)
+   <p align="center">
+       <img src="figures/decisions_v2-1.png" alt="decisions" width="700"/>
+   </p>
+   Figure 4: Simulation decision overview.
 
 2. Action Space: The action space configuration is dependent on the decisions present as dictated by the chosen setup and is inferred by the number of optimizer objects (either sequencing, transport) present. The simulation can completely defer a decision type to a fixed optimizer. Agent action spaces are any combination of the following:
    - [x] Direct operation sequencing (agent action is an operation index)
@@ -89,11 +84,12 @@ Agents are tasked with decision making (mainly) when operation processing finish
    - [x] Indirect transport target selection using optimizers (agent action is a transport optimizer index)
    - [ ] Direct vehicle selection
    - [ ] Indirect vehicle selection <br/>
-	
-	The supported direct/indirect action combinations are listed in the overview below
-    <p align="center">
-        <img src="figures/overview_simulation_modes.png" alt="dec_modes" width="500"/>
-    </p>
+   The supported direct/indirect action combinations are listed in the overview below
+   <p align="center">
+       <img src="figures/overview_simulation_modes.png" alt="dec_modes" width="500"/>
+   </p>
+   Figure 5: Simulation mode overview. The simulation mode is configured implicitly by number and type of optimizers passed to the environment initialization function.
+
 3. Observation space: The observation space can be configured by means of a  `ReturnTransformer` object having access to the entire state representation. Selectable information is <br/>
 	* System time<br/>
 	* Raw state information <br/>
@@ -183,4 +179,5 @@ If you use `FabricatioRL` in your research, you can cite it as follows:
 
 ## References
 <a id="1">[1]</a> Pinedo, Michael. Scheduling. Vol. 29. New York: Springer, 2012.
+
 <a id="2">[2]</a> Rinciog, Alexandru, and Anne Meyer. "Towards Standardizing Reinforcement Learning Approaches for Stochastic Production Scheduling." arXiv preprint arXiv:2104.08196 (2021).
