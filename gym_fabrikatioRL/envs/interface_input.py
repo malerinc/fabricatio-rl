@@ -904,7 +904,8 @@ class MachineMatrices:
         m = dims.n_machines
         if machine_speeds is None:
             return np.ones(m)
-        elif machine_speeds == 'default_sampling':
+        elif (type(machine_speeds) == str and
+              machine_speeds == 'default_sampling'):
             return np.random.choice(np.arange(0.5, 1.5, 0.1), m)
         elif type(machine_speeds) == np.ndarray:
             assert len(machine_speeds.shape) == 1
