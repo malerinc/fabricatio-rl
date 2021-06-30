@@ -14,6 +14,14 @@ class Optimizer:
 class ReturnTransformer:
     @staticmethod
     def transform_state(state: State) -> np.ndarray:
+        """
+        Transforms the environment state into the agent state. Note that a
+        numpy array has to be returned for compatibility with the environment
+        interface state shape inference.
+
+        :param state: The state as defined by the environment Core.
+        :return: The state representation as a numpy array.
+        """
         raise NotImplementedError
 
     @staticmethod
