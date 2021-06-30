@@ -58,7 +58,15 @@ class FabricatioRL(gym.Env):
             return state, None, done, {}
         state_repr = self.__return_transformer.transform_state(state)
         reward = self.__return_transformer.transform_reward(state)
+        while self.autoplay() and not done:
+            state_repr, reward, done, _ = self.step(0)
         return state_repr, reward, done, {}
+
+    def autoplay(self):
+        return ((self.__core.state.scheduling_mode == 0 and
+             self.__optimizer_configuration in {4, 6, 7}) or
+                (self.__core.state.scheduling_mode == 1 and
+                 self.__optimizer_configuration in {2, 6, 10}))
 
     def reset(self) -> State:
         # seed cycling if seeds were passed
@@ -137,7 +145,7 @@ class FabricatioRL(gym.Env):
                 return [a + toffs - 1 for a in self.__core.state.legal_actions]
         elif self.__optimizer_configuration in {9, 10}:
             if self.__core.state.scheduling_mode == 0:
-                return list(range(toffs))
+                return list(range(len(self.sequencing_optimizers)))
             else:
                 raise UndefinedLegalActionCall(
                     self.__optimizer_configuration,
@@ -335,6 +343,18 @@ class FabricatioRL(gym.Env):
     @property
     def core(self):
         return self.__core
+
+    @property
+    def sequencing_optimizers(self):
+        return self.__sequencing_optimizers
+
+    @property
+    def transport_optimizers(self):
+        return self.__transport_optimizers
+
+    @property
+    def optimizer_configuration(self):
+        return self.__optimizer_configuration
     # </editor-fold>
 
     # <editor-fold desc="Action Transformation">
@@ -361,7 +381,7 @@ class FabricatioRL(gym.Env):
         elif self.__optimizer_configuration in {5, 6}:
             return self.__transform_a_fixed_optimizer_run()
         elif self.__optimizer_configuration == 7:
-            self.__transform_a_fixed_sequencing_selectable_transport(
+            return self.__transform_a_fixed_sequencing_selectable_transport(
                 agent_action)
         elif self.__optimizer_configuration in {8, 9}:
             return self.__transform_a_selectable_sequencing_direct_transport(
@@ -377,11 +397,35 @@ class FabricatioRL(gym.Env):
 
     def __transform_a_selectable_sequencing_direct_transport(
             self, action: int) -> int:
-        if self.__core.state.scheduling_mode == 0:
-            if action >= self.__transport_decision_offset:
+        """
+        Translates an agent action into a simulation core action when sequencing
+        decisions (mode 0) are made indirectly through optimizers and transport
+        decisions (mode 1) are taken directly by the agent.
+
+        This function ensures that:
+            1. No transport action is taken in sequencing mode
+            (action > transport decision offset)
+            2. No transport decisions are made at all, if the simulation
+            instance only needs sequencing decisions (transport decision offset
+            is None)
+            3. The raw transport action passed by the agent is legal, as
+            perceived by the simulation core.
+
+        :param action: The action selected by the agent.
+        :return: The corresponding simulation core action.
+        """
+        if self.__core.state.scheduling_mode == 0:  # sequencing
+            if self.__transport_decision_offset is None:
+                # no transport decisions available
+                return self.__sequencing_optimizers[action].get_action(
+                    self.__core.state)
+            elif action >= self.__transport_decision_offset:
+                # picked a transport action in sequencing mode
                 raise IllegalAction()
-            return self.__sequencing_optimizers[action].get_action(
-                self.__core.state)
+            else:
+                # all goode :)
+                return self.__sequencing_optimizers[action].get_action(
+                    self.__core.state)
         else:
             core_action = action - self.__transport_decision_offset + 1
             if (action < self.__transport_decision_offset or
