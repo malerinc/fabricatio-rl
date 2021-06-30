@@ -201,14 +201,33 @@ class SchedulingLogger:
                     })
 
     def __write_heatmaps(self):
-        for m_name, matrix in self.state.matrices.to_dict().items():
-            f_base = f'{self.log_dir}/heatmaps/{m_name}/'
-            if not os.path.exists(f_base):
-                os.makedirs(f_base)
-            pd.DataFrame(matrix).to_csv(
-                f'{f_base}'
-                f'{str(self.state.n_steps)}.csv',
-                index=False, header=False)
+        """
+        Creates a json file with the information from the state matrices. The
+        file can be used to create heatmap visualizations for the individual
+        matrices. The json structure is as follows:
+        {matrix_name_1: {
+            data: nested list of values
+            min_value: minimum value over the lists
+            max_value: max value over the lists
+            x_label: the column title
+            y_label: the row title
+            n_rows: the number of rows in the matrix
+            n_cols: the number of columns in the matrix
+            nfo_type: the information category; either 'jobs', 'tracking',
+                'machines'
+            }
+            matrix_name_1: {
+                ...
+            }
+            ...
+        }
+        :return:
+        """
+        f_name = f'{self.log_dir}/heatmaps/{str(self.state.n_steps)}.json'
+        f_matrices = open(create_folders(f_name), 'w')
+        f_matrices_data = self.state.operation_graph.to_dict()
+        dump(self.state.matrices.to_dict(), f_matrices)
+        f_matrices.close()
 
     def __write_events(self):
         events_path = f'{self.log_dir}/events/{str(self.state.n_steps)}.txt'

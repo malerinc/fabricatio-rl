@@ -5,6 +5,25 @@ from copy import deepcopy
 
 
 class StateMatrices:
+    """
+    Class containing all the raw state information, The information within this
+    object both determines the simulation logic and, if presented to an agent,
+    the decision logic. The entirety of this information, if presented to an
+    agent, would yield a fully observable MDP setup.
+
+    The fact that most of the information here is stored in a numpy array,
+    explains the class naming.
+
+    Note that the machine_capab_d... instance variables are the only exceptions,
+    given that they are dictionaries. These dictionaries encore redundant
+    information with respect to the machine capability n_machines x n_types
+    matrix machine_capab_cm. This is done for convenience and O(1) access of
+    either the type of operations that can be ran on machine i
+    (machine_capab_dm[i]) or the machine that can execute operation of type T
+    (machine_capab_dt[T]).
+
+    TODO: COMMENT ON ALL PARAMETERS
+    """
     def __init__(self, sched_input: Input):
         # operation information
         self.op_type = sched_input.matrices_j.operation_types
@@ -105,29 +124,95 @@ class StateMatrices:
         return np.random.choice(operation_times, size)
 
     def __str__(self):
-        return dumps({
-            'operation_type_matrix': self.op_type.tolist(),
-            'operation_duration_matrix': self.op_duration.tolist(),
-            'operation_tooling_level_matrix': self.op_tooling_lvl.tolist(),
-            'operation_perturbation_matrix': self.op_perturbations.tolist(),
-            'operation_status_matrix': self.op_status.tolist(),
-            'operation_location_matrix': self.op_location.tolist(),
-            'transport_matrix': self.transport_times.tolist(),
-            'tooling_matrix': self.tooling_times.tolist()})
+        """
+        Creates a string representation of the StateMatrices object.
+
+        :return: String representation.
+        """
+        # machinery&layout information
+        return dumps(self.to_dict())
+
+    @staticmethod
+    def __fill_matrix_metadata(matrix: np.ndarray,
+                               label_x='Operation Index',
+                               label_y='Job Index',
+                               nfo_type='jobs'):
+        """
+        Converts a particular state matrix to a list and ads metadata pertaining
+        to the contained values, matrix structure and index names as specified
+        by the function parameters. The list representation together with the
+        metadata fields is stored within a dictionary which is returned.
+
+        to_dict() helper method.
+
+        :param matrix: The state matrix to add metadata to.
+        :param label_x: The name of the column index.
+        :param label_y: The name of the row index.
+        :param nfo_type: The matrix category; can be either "jobs", "machines"
+            or "tracking".
+        :return: The dictionary containing the list representation and metadata
+            for the matrix parameter.
+        """
+
+        if np.inf in matrix:
+            matrix[matrix == np.inf] = 9999
+        return {
+            'x_label': label_x,
+            'y_label': label_y,
+            'data': matrix.tolist(),
+            'min_value': int(matrix.min()),
+            'max_value': int(matrix.max()),
+            'n_rows': matrix.shape[0],
+            'n_cols': matrix.shape[1] if len(matrix.shape) == 2 else 1,
+            'nfo_type': nfo_type
+         }
 
     def to_dict(self):
+        """
+        Creates a serializable dictionary representation of the state matrices.
+
+        :return: The dictionary representation of the state matrices.
+        """
         return {
-            'operation_type_matrix': self.op_type.tolist(),
-            'operation_duration_matrix': self.op_duration.tolist(),
-            'operation_tooling_level_matrix': self.op_tooling_lvl.tolist(),
-            'operation_perturbation_matrix': self.op_perturbations.tolist(),
-            'operation_status_matrix': self.op_status.tolist(),
-            'operation_location_matrix': self.op_location.tolist(),
-            'transport_matrix': self.transport_times.tolist(),
-            'tooling_matrix': self.tooling_times.tolist()}
+            'operation_type_matrix': StateMatrices.__fill_matrix_metadata(
+                self.op_type),
+            'operation_duration_matrix': StateMatrices.__fill_matrix_metadata(
+                self.op_duration),
+            'operation_tooling_level_matrix':
+                StateMatrices.__fill_matrix_metadata(self.op_tooling_lvl),
+            'operation_perturbation_matrix':
+                StateMatrices.__fill_matrix_metadata(self.op_perturbations),
+            'operation_status_matrix':
+                StateMatrices.__fill_matrix_metadata(self.op_status,
+                                                     nfo_type='tracking'),
+            'operation_location_matrix':
+                StateMatrices.__fill_matrix_metadata(self.op_location,
+                                                     nfo_type='tracking'),
+            'transport_matrix':
+                StateMatrices.__fill_matrix_metadata(
+                    self.transport_times, 'Machine Number', 'Machine Number',
+                    'machines'),
+            'tooling_matrix':
+                StateMatrices.__fill_matrix_metadata(
+                    self.tooling_times, 'Tool Set', 'Tool Set', 'machines'),
+            'job_release_times': StateMatrices.__fill_matrix_metadata(
+                    self.job_arrivals, ''),
+            'job_deadlines': StateMatrices.__fill_matrix_metadata(
+                    self.deadlines, ''),
+            'machine_speeds': StateMatrices.__fill_matrix_metadata(
+                    self.machine_speeds, '', 'Machine Number', 'machines'),
+            'machine_buffer_capacity': StateMatrices.__fill_matrix_metadata(
+                    self.buffer_capacity, '', 'Machine Number', 'machines')
+        }
 
 
 class OperationGraph:
+    """
+    @__view_indices: Private attribute that tracks the indices of the jobs
+        currently visible.
+    @root_visible: TODO
+    @root_hidden: TODO
+    """
     def __init__(self, adjacency_dicts, n_visible):
         """
         Builds an all job operation precedence (directed acyclic) graph from
