@@ -276,8 +276,8 @@ def extract_jssp_benchmark_info(benchmark_f_name: str) -> \
 
 
 def test_jssp_simulation_benchmark_consistency():
-    benchmark_dir = '../benchmarks/jssp_test_instances'
-    solution_dir = '../benchmarks/jssp_test_solutions'
+    benchmark_dir = './benchmarks/jssp_test_instances'
+    solution_dir = './benchmarks/jssp_test_solutions'
     logpath = ''
     env_seed = np.random.randint(low=1, high=1000, size=1)
     f_names = []
