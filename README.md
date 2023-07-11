@@ -1,4 +1,4 @@
-## FabricatioRL
+# FabricatioRL
 
 FabrikatioRL is an reinforcement learning (RL) compatible event discrete simulation framework for production scheduling  problems implementing the [OpenAI Gym](https://gym.openai.com/) standard. As such RL agents from Libraries such as [KerasRL](https://github.com/keras-rl/keras-rl) or [Stable Baselines](https://github.com/hill-a/stable-baselines) can be tested within the realm of scheduling. 
 
@@ -16,6 +16,7 @@ The following production scheduling problem components can be explicitly conside
    - [x] Variable number of operations per job
    - [x] Recurrent operation types within jobs (recirculation)
 2. Resource characteristics
+   - [x] Variable machine speeds
    - [x] Machine capabilities
    - [x] Machine input buffer capacities
    - [ ] Machine output buffers
@@ -104,38 +105,75 @@ Agents are tasked with decision making (mainly) when operation processing finish
 
 4. Reward: Same configuration mechanism as with observation space
 
-## Getting Started
+### Visualization
+FabricatioRL ships with a visualization app built on Flask. See the "Examples" 
+section for an orientation on how to use it.
+
+# Getting Started
+For now, the latest version of `fabricatio-rl` and its controls is not made 
+available through `pypi`. 
+As such, to run the contained experiment and example scripts, the "manual" 
+installation process below must be performed. 
+Note that this project was tested with python 3.6 only. 
+Other interpreter versions may lead to unexpected errors. 
+
+### Installation
+1. Clone the project to get the code locally:
+```
+git clone https://github.com/malerinc/fabricatio-rl.git
+```
+2. Navigate to the `fabricatio-rl` folder in a terminal and run
+```
+python setup.py install
+```
+3. Navigate to the `fabricatio-controls` in a terminal and run
+```
+python setup.py install
+```
+
 ### Examples
-This repository contains three simulation usage examples namely
-1. Random action selection 
-2. A simple heuristic run on randomely sampled JSSPs
-3. Training and testing a Double DQN Agent from `keras-rl` with networks defined in `keras` on stochastic dynamic JSSPs with 
+This repository contains four simulation usage examples namely
+1. A simple heuristic run on randomely sampled JSSPs
+2. Training and testing a Double DQN Agent from `keras-rl` with networks defined in `keras` on stochastic dynamic JSSPs with 
 	* 5 operations per job
 	* 20 jobs total
 	* 10 initial jobs 
 	* partially ordered job operations
 	* custom fixed machine capabilities
+3. An example of random action selection run 
 4. A demonstration of Fabricatio's logging and visualization functionality. 
 The logging functionality is activated by providing the simulation framework 
-with the path to a log directory. To visualize the logs the `flask` app 
+with the `path` to a log directory. To visualize the logs the `flask` app 
 contained the `fabricatio-rl`'s `visualization_app` module needs to be 
-pointed to the same directory on instantiation. 
+pointed to the same `path` on instantiation. 
 
 
-To run the third example you will need to additionally install keras 2.2, tensorflow 1.4 and keras-rl
+To run the third example you will need to additionally install `keras-rl2`
+and `tensorflow`.
+to that end you should navigate to the experiments folder and execute
+
 ```
-pip install keras==2.2
-pip install tensorflow==1.4
-pip install keras-rl
+pip pip install -r requirements.txt
 ```
 
-## Citing the Project
+### Experiments
+Understanding the experiments contained by this repository requires an in depth 
+knowledge of the two packages `fabricatio-rl` and `fabricatio-controls` that.
+We plan to convey this knowledge through future publications. 
+
+To run them, simply execute the scripts contained by the `experiments` directory 
+in sequence.
+Note running the experiments to completion may take weeks on an average personal 
+computer. 
+ 
+
+# Citing the Project
 If you use `FabricatioRL` in your research, you can cite it as follows:
 
 ```
 @misc{rinciog2020fabricatio-rl,
     author = {Rinciog, Alexandru and Meyer Anne},
-    title = {FabricatioRL},
+    title = {FabricatioRL-v2},
     year = {2021},
     publisher = {GitHub},
     journal = {GitHub Repository},
@@ -143,7 +181,7 @@ If you use `FabricatioRL` in your research, you can cite it as follows:
 }
 ```
 
-## References
+# References
 <a id="1">[1]</a> Pinedo, Michael. Scheduling. Vol. 29. New York: Springer, 2012.
 
 <a id="2">[2]</a> Rinciog, Alexandru, and Anne Meyer. "Towards Standardizing Reinforcement Learning Approaches for Stochastic Production Scheduling." arXiv preprint arXiv:2104.08196 (2021).
