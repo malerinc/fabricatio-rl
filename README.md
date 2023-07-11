@@ -127,6 +127,20 @@ Here's a peek:
 <a href="https://youtu.be/wn-gQOx-xd0" title="Link Title"><img width=500 src="figures/visualization_sneek_peek.png" alt="Alternate Text" /></a>
 </p>
 
+# FabricatioControls
+The `fabricatio-controls` package contained in the repository contains 
+scheduling algorithms compatible with the FabricatioRL.
+
+Schedulers based on the following approaches are contained:
+- [x] Constrained Programming (built on top of `ortools`) 
+- [x] Heuristics and heurisctic combinations
+- [x] Monte Carlo Tree Search
+- [x] DQN (built on top of `stable-baselines3`)
+- [x] AlphaZero (built ontop of `tensorflow`(keras))
+
+Some useful functionality for evaluating the contained algorithms is also 
+present.
+
 # Getting Started
 For now, the latest version of `fabricatio-rl` and its controls is not made 
 available through `pypi`. 
