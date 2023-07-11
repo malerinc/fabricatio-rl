@@ -1,0 +1,16 @@
+{% extends "landing.html" %}
+{% block title %}Overview {% endblock %}
+{%  block head %}
+    {{ super() }}
+{%  endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="col-lg-12 row align-items-center" style="background-color: #bfef8d">
+            <div class="col-lg"><div id="slider"></div></div>
+            <div class="col-lg-2"><p id="value"></p></div>
+            <div class="col-lg-2"><p id="sys_time"></p></div>
+        </div>
+        <div class="row col-lg-12" id="vis_root" style = "background:#eae0e0"></div>
+    </div>
+{% endblock %}

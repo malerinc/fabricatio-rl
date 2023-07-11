@@ -1,0 +1,35 @@
+.machine_state {
+  border-spacing: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size:15px;
+}
+
+.machine_state .m_name {
+  border: 2px solid #900C3F;
+  padding: 3px 2px;
+  /*background-color: #FF5733;*/
+  border-radius: 6px 0 0 0;
+}
+
+.machine_state .btm{
+  border-radius: 0 0 6px 0;
+}
+
+.machine_state .capab{
+  border: 1px solid #AAAAAA;
+  text-align: left;
+}
+
+.machine_state td{
+  border: 1px solid #F9C70C;
+  text-align: center;
+  background-color: #FFE338;
+}
+
+table.blueTable tfoot .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}

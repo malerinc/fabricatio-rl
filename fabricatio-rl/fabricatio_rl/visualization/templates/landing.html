@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+    {%  block head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" class="matrix_options" type="image/png" href="{{ url_for('static', filename='images/fav.png') }}">
+        <title>{% block title %}{% endblock %}JSSP Visulalization</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" class="matrix_options" type="text/css" href="{{ url_for('static', filename='landing/vendor/bootstrap/css/bootstrap.min.css') }}">
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" class="matrix_options" type="text/css" href="{{ url_for('static', filename='landing/css/simple-sidebar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/zoom_on_hover.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/d3.slider.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/graph_pannel.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/machines_pannel.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <!-- External Libraries -->
+        <script src="{{ url_for('static', filename='landing/vendor/jquery/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='landing/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='landing/vendor/d3/d3.v6.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='landing/vendor/d3/d3-simple-slider.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='landing/vendor/dagre/dagre.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='landing/vendor/dagre/dagre-d3.min.js') }}"></script>
+    {% endblock %}
+    </head>
+
+    <body>
+        <div id="settings_cache" style="display: none;">
+            <div id="n_states_available">-1</div>
+            <div id="current_id">-1</div>
+            <div id="all_jobs">1</div>
+        </div>
+        <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper"
+             style="width:16%">
+            <div class="sidebar-heading">
+                <a href="https://dls.mb.tu-dortmund.de/">
+                    <img class="logo" src="{{ url_for('static',
+                        filename='images/dls_logo_green.png') }}"
+                         width="150px" alt="LFO">
+                </a>
+            </div>
+            <div class="sidebar-heading">
+                <a href="https://lfo.tu-dortmund.de/">
+                    <img class="logo" src="{{ url_for('static',
+                        filename='images/lfo_logo.svg') }}"
+                         width="150px" alt="LFO">
+                </a>
+            </div>
+            <div id="graph_setting" class="list-group list-group-flush dropdown-check-list" style="width:100%;">
+                <span class="anchor list-group-item list-group-item-action"
+                      style="width:100%;" onclick="toggle_setting_dropdown(this)">Graph</span>
+                <ul class="items">
+                    <li><label>
+                        <input id="visible" class="graph_options" type="checkbox"
+                               onclick="toggle_graph_visibililty(this)" checked/>
+                    </label> Visible Nodes </li>
+                    <li><label>
+                        <input id="hidden" class="graph_options" type="checkbox"
+                        onclick="toggle_graph_visibililty(this)"/>
+                    </label> Hidden Nodes </li>
+                </ul>
+            </div>
+            <div id="matrix_setting" class="list-group list-group-flush dropdown-check-list" style="width:100%;">
+                <span class="anchor list-group-item list-group-item-action"
+                      style="width:100%;" onclick="toggle_setting_dropdown(this)">Matrices</span>
+                <ul class="items">
+                    <li><label>
+                        <input id="operation_type_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)" checked/>
+                    </label> Operation Types </li>
+                    <li><label>
+                        <input id="operation_duration_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)" checked/>
+                    </label> Operation Durations </li>
+                    <li><label>
+                        <input id="operation_perturbation_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Operation Perturbations </li>
+                    <li><label>
+                        <input id="operation_location_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Operation Locations </li>
+                    <li><label>
+                        <input id="operation_status_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Operation States </li>
+                    <li><label>
+                        <input id="operation_tooling_level_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Operation Tooling Levels </li>
+                    <li><label>
+                        <input id="job_deadlines" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Job Deadlines </li>
+                    <li><label>
+                        <input id="job_release_times" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Job Release Times </li>
+                    <li><label>
+                        <input id="machine_buffer_capacity" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Machine Buffer Capacities </li>
+                    <li><label>
+                        <input id="machine_speeds" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Machine Speeds </li>
+                    <li><label>
+                        <input id="transport_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Transport Matrix </li>
+                    <li><label>
+                        <input id="tooling_matrix" class="matrix_options" type="checkbox"
+                               onclick="toggle_matrix_visibililty(this)"/>
+                    </label> Tooling Matrix </li>
+                    <li><label onclick="toggle_visible_matrix_jobs(this)">
+                        <input type="radio" name="Ppub" value="1" checked="checked">
+                    </label> All Jobs </li>
+                    <li><label onclick="toggle_visible_matrix_jobs(this)">
+                        <input type="radio" name="Ppub" value="0">
+                    </label> WIP Jobs </li>
+{#                    <li><label>#}
+{#                        <input type="radio" name="Ppub" value="all" checked="checked">#}
+{#                    </label> Not Finished Jobs </li>#}
+                </ul>
+            </div>
+            <div id="schedule_settings" class="list-group list-group-flush dropdown-check-list" style="width:100%;">
+                <span class="anchor list-group-item list-group-item-action"
+                      style="width:100%;" onclick="toggle_setting_dropdown(this)">Schedule</span>
+                <ul class="items">
+                    <li><label>
+                        <input id="partial_schedule" class="graph_options"
+                               type="checkbox"
+                               onclick="toggle_schedule_visibililty(this)" checked/>
+                    </label> Historic Schedule </li>
+                    <li><label>
+                        <input id="current_plan" class="graph_options"
+                               type="checkbox"
+                               onclick="toggle_schedule_visibililty(this)"/>
+                    </label> Scheduling Plan </li>
+                </ul>
+            </div> {# toggle_job_kpi_visibililty #}
+            <div id="kpi_settings" class="list-group list-group-flush dropdown-check-list" style="width:100%;">
+                <span class="anchor list-group-item list-group-item-action"
+                      style="width:100%;" onclick="toggle_setting_dropdown(this)">KPIs</span>
+                <ul class="items">
+                    <li><label>
+                        <input id="metrics_jobs" class="kpi_options"
+                               type="checkbox"
+                               onclick="toggle_kpi_visibililty(this)" checked/>
+                    </label> Job KPIs </li>
+                    <li><label>
+                        <input id="metrics_machines" class="kpi_options"
+                               type="checkbox"
+                               onclick="toggle_kpi_visibililty(this)"/>
+                    </label> Machine KPIs </li>
+                </ul>
+            </div> {# toggle_job_kpi_visibililty #}
+            <div id="runs"
+                 class="list-group list-group-flush
+                        dropdown-check-list" style="width:100%;">
+                <span class="anchor list-group-item list-group-item-action"
+                      id="fold" onclick="toggle_run_menu()"
+                      style="width:100%;">Runs</span>
+{#                <button class="btn btn-default dropdown-toggle"#}
+{#                        type="button" id="dropdownRuns"#}
+{#                        data-toggle="dropdown"#}
+{#                        aria-haspopup="true"#}
+{#                        aria-expanded="true"> Runs#}
+{#                    <span class="caret"></span>#}
+{#                </button>#}
+                <ul id="runs_dropdown" class="scrollable-menu"
+                    aria-labelledby="dropdownMenu1">
+{#                    <li role="separator" class="divider"></li>#}
+                </ul>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <!-- /#page-content-wrapper -->
+            <div id="content">{% block content %}{% endblock %}</div>
+        </div>
+        <!-- /#wrapper -->
+        <!-- Own Scripts -->
+        <script src="{{ url_for('static', filename='js/render_graph.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/drawslider.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/render_machines.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/drawgantt.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/render_eventlog.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/drawKPI.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+        <!-- Menu Toggle Script -->
+        <script>
+            {#TODO> implement radio buttons functionality#}
+            let radioAll = document.querySelectorAll('[type=radio]');
+            radioAll.forEach(function(r){
+              r.onclick = function(){
+                let ddAll = document.querySelectorAll('select');
+                ddAll.forEach(function(s){
+                  s.selectedIndex = 0;
+                });
+              }
+            });
+
+            function radioCheck(el) {
+                var input = el.parentNode.querySelector('[name=Ppub]');
+                input.checked = "checked";
+            }
+        </script>
+        </div>
+    </body>
+</html>

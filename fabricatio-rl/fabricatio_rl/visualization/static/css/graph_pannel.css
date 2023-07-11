@@ -1,0 +1,26 @@
+.node rect {
+  stroke: #333;
+  fill:  #00802b;
+  stroke-width: 1.5px;
+}
+
+.node circle {
+  stroke: #333;
+  fill:  #00802b;
+  stroke-width: 1.5px;
+}
+
+.node .label g text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf, serif;
+  font-size: 8px;
+  text-align: center;
+  fill:  #f8f9fa;
+}
+
+.edgePath path {
+  stroke: #333;
+  stroke-width: 1.5px;
+  fill: #000000;
+  opacity: 1;
+}
