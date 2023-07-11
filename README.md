@@ -8,6 +8,19 @@ FabrikatioRL is written with extensibility in mind and is highly configurable in
 1. Scheduling problem setup and
 2. Markov decision process (MDP) modeling  
 
+The following conference presentations and the associated presentations shed 
+some additional light into the framework:
+
+**Talk at CIRP CMS 2022:**
+<p align="center">
+<a href="https://youtu.be/fduRz48zfw4" title="Link Title"><img width=500 src="figures/cirp_presentation.png" alt="Alternate Text" /></a>
+</p>
+
+**Talk at the Winter Simulation Conference 2021:**
+<p align="center">
+<a href="https://youtu.be/Dy3O94YoiHo" title="Link Title"><img width=500 src="figures/wsc_presentation.png" alt="Alternate Text" /></a>
+</p>>
+
 ## Features
 ### Setup Features
 The following production scheduling problem components can be explicitly considered when instantiating the simulation (planned extensions are marked with unticked boxes):
@@ -53,17 +66,17 @@ The following trackers are maintained for optimization goal measurement (and rew
 Production scheduling setups are usually described using the parameters <img src="https://render.githubusercontent.com/render/math?math=\alpha, \beta"> for production setups and <img src="https://render.githubusercontent.com/render/math?math=\gamma"> for optimization goal [[1]](#1). The figures below present an overview of the parameters covered by our simulation. The images from [[2]](#2) were adapted for this purpose. There you can read more about the different setups in RL scheduling literature.
 
    <p align="center">
-       <img src="figures/fabRL_alphas.png" alt="alphas" width="500"/>
+       <img src="figures/fabRL_alphas.png" alt="alphas" width="700"/>
    </p>
    Figure 1: Machine setup (<img src="https://render.githubusercontent.com/render/math?math=\alpha">) hierarchy in relationtion with FabrikatioRL. Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. The hatched rectangle represents our simulation.
 
    <p align="center">
-       <img src="figures/fabRL_betas.png" alt="betas" width="500"/>
+       <img src="figures/fabRL_betas.png" alt="betas" width="700"/>
    </p>
    Figure 2: Additional constraints (<img src="https://render.githubusercontent.com/render/math?math=\beta">) covered by FabrikatioRL (hatched). Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. Note that currently, FabrikatioRL can only simulate <img src="https://render.githubusercontent.com/render/math?math=tr(\infty)"> environments.
 
    <p align="center">
-       <img src="figures/fabRL_gammas.png" alt="gammas" width="500"/>
+       <img src="figures/fabRL_gammas.png" alt="gammas" width="700"/>
    </p>
    Figure 3: Optimization goal (<img src="https://render.githubusercontent.com/render/math?math=\gamma">) intermediary variables covered by FabrikatioRL (hatched). Arrows indicate an "is used by" relation. Green rectangles are described by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles (red or green) were experimented with in RL literature. Boxes with gray filling represent intermediary variables.
 
@@ -106,8 +119,13 @@ Agents are tasked with decision making (mainly) when operation processing finish
 4. Reward: Same configuration mechanism as with observation space
 
 ### Visualization
-FabricatioRL ships with a visualization app built on Flask. See the "Examples" 
-section for an orientation on how to use it.
+FabricatioRL ships with a visualization app built on Flask. Though useful for 
+debugging, the visualization is still in its incipient phases. 
+See the "Examples" section for an orientation on how to use it. 
+Here's a peek:
+<p align="center">
+<a href="https://youtu.be/wn-gQOx-xd0" title="Link Title"><img width=500 src="figures/visualization_sneek_peek.png" alt="Alternate Text" /></a>
+</p>
 
 # Getting Started
 For now, the latest version of `fabricatio-rl` and its controls is not made 
