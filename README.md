@@ -1,7 +1,4 @@
-
 ## FabricatioRL
-[![DOI](https://zenodo.org/badge/356875497.svg)](https://zenodo.org/badge/latestdoi/356875497)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 FabrikatioRL is an reinforcement learning (RL) compatible event discrete simulation framework for production scheduling  problems implementing the [OpenAI Gym](https://gym.openai.com/) standard. As such RL agents from Libraries such as [KerasRL](https://github.com/keras-rl/keras-rl) or [Stable Baselines](https://github.com/hill-a/stable-baselines) can be tested within the realm of scheduling. 
 
@@ -57,17 +54,17 @@ Production scheduling setups are usually described using the parameters <img src
    <p align="center">
        <img src="figures/fabRL_alphas.png" alt="alphas" width="500"/>
    </p>
-   Figure 1: Machine setup (alpha) hierarchy in relationtion with FabrikatioRL. Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. The hatched rectangle represents our simulation.
+   Figure 1: Machine setup (<img src="https://render.githubusercontent.com/render/math?math=\alpha">) hierarchy in relationtion with FabrikatioRL. Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. The hatched rectangle represents our simulation.
 
    <p align="center">
        <img src="figures/fabRL_betas.png" alt="betas" width="500"/>
    </p>
-   Figure 2: Additional constraints (beta) covered by FabrikatioRL (hatched). Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. Note that currently, FabrikatioRL can only simulate tr(infinite) environments.
+   Figure 2: Additional constraints (<img src="https://render.githubusercontent.com/render/math?math=\beta">) covered by FabrikatioRL (hatched). Arrows define a generalization relation. Green rectangles were introduced by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles were experimented with in RL literature. Note that currently, FabrikatioRL can only simulate <img src="https://render.githubusercontent.com/render/math?math=tr(\infty)"> environments.
 
    <p align="center">
        <img src="figures/fabRL_gammas.png" alt="gammas" width="500"/>
    </p>
-   Figure 3: Optimization goal (gamma) intermediary variables covered by FabrikatioRL (hatched). Arrows indicate an "is used by" relation. Green rectangles are described by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles (red or green) were experimented with in RL literature. Boxes with gray filling represent intermediary variables.
+   Figure 3: Optimization goal (<img src="https://render.githubusercontent.com/render/math?math=\gamma">) intermediary variables covered by FabrikatioRL (hatched). Arrows indicate an "is used by" relation. Green rectangles are described by Pinedo. Red rectangeles were defined in in RL scheduling literature. Filled in rectangles (red or green) were experimented with in RL literature. Boxes with gray filling represent intermediary variables.
 
 ### MDP Features
 Agents are tasked with decision making (mainly) when operation processing finishes on  machines. The simulation supports the configuration of the following production scheduling MDP components:
@@ -108,46 +105,6 @@ Agents are tasked with decision making (mainly) when operation processing finish
 4. Reward: Same configuration mechanism as with observation space
 
 ## Getting Started
-### Installation
-The project is not yet uploaded to PyPI pending thorough debuging and documentation. You can use it by
-1. Cloning the repository:
-	```
-	git clone https://github.com/malerinc/fabricatio-rl.git
-	```
-2. Installing the package in development mode:
-	```
-	cd fabricatio-rl
-	pip install -e .
-	```
-3. Defining the environment arguments
-	```
-    env_args = {
-        'scheduling_inputs': {
-            'n_jobs': 100,                # n
-            'n_machines': 20,             # m
-            'n_tooling_lvls': 0,          # l
-            'n_types': 20,                # t
-            'min_n_operations': 20,
-            'max_n_operations': 20,       # o
-            'n_jobs_initial': 100,        # jobs with arrival time 0
-            'max_jobs_visible': 100,      # entries in {1 .. n}
-        },
-    }
-   ```
-4. Registering and building the environment
-   ``` 
-    register(id='fabricatio-v0',
-             entry_point='gym_fabrikatioRL.envs:FabricatioRL', kwargs=env_args)
-    env = gym.make('fabricatio-v0')
-   ```
-5. Running the simulation
-    ```
-    state, done = env.reset(), False
-    while not done:
-        legal_actions = env.get_legal_actions()
-        state, reward, done, _ = env.step(np.random.choice(legal_actions))
-    print(f'The makespan after a random run was {state.system_time}')
-    ```
 ### Examples
 This repository contains three simulation usage examples namely
 1. Random action selection 
@@ -158,6 +115,12 @@ This repository contains three simulation usage examples namely
 	* 10 initial jobs 
 	* partially ordered job operations
 	* custom fixed machine capabilities
+4. A demonstration of Fabricatio's logging and visualization functionality. 
+The logging functionality is activated by providing the simulation framework 
+with the path to a log directory. To visualize the logs the `flask` app 
+contained the `fabricatio-rl`'s `visualization_app` module needs to be 
+pointed to the same directory on instantiation. 
+
 
 To run the third example you will need to additionally install keras 2.2, tensorflow 1.4 and keras-rl
 ```
