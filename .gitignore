@@ -1,4 +1,12 @@
 .idea/
+**/__pychache__
+**/.ipynb_checkpoints
+**/sim_data
 *.pyc
-*/.ipynb_checkpoints
-
+/experiments/*.png
+*.ini
+*.7z
+*tfevents*
+*/dist/*
+*/build/*
+*.egg-info
