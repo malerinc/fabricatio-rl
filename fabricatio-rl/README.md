@@ -105,46 +105,6 @@ Agents are tasked with decision making (mainly) when operation processing finish
 4. Reward: Same configuration mechanism as with observation space
 
 ## Getting Started
-### Installation
-The project is not yet uploaded to PyPI pending thorough debuging and documentation. You can use it by
-1. Cloning the repository:
-	```
-	git clone https://github.com/malerinc/fabricatio-rl.git
-	```
-2. Installing the package in development mode:
-	```
-	cd fabricatio-rl
-	pip install -e .
-	```
-3. Defining the environment arguments
-	```
-    env_args = {
-        'scheduling_inputs': {
-            'n_jobs': 100,                # n
-            'n_machines': 20,             # m
-            'n_tooling_lvls': 0,          # l
-            'n_types': 20,                # t
-            'min_n_operations': 20,
-            'max_n_operations': 20,       # o
-            'n_jobs_initial': 100,        # jobs with arrival time 0
-            'max_jobs_visible': 100,      # entries in {1 .. n}
-        },
-    }
-   ```
-4. Registering and building the environment
-   ``` 
-    register(id='fabricatio-v0',
-             entry_point='gym_fabrikatioRL.envs:FabricatioRL', kwargs=env_args)
-    env = gym.make('fabricatio-v0')
-   ```
-5. Running the simulation
-    ```
-    state, done = env.reset(), False
-    while not done:
-        legal_actions = env.get_legal_actions()
-        state, reward, done, _ = env.step(np.random.choice(legal_actions))
-    print(f'The makespan after a random run was {state.system_time}')
-    ```
 ### Examples
 This repository contains three simulation usage examples namely
 1. Random action selection 
