@@ -166,14 +166,19 @@ if __name__ == "__main__":
                    target_model_update=1e-3, policy=policy)
     dqn.compile(Adam(lr=1e-3))
 
-    # DEFINE TENSORBOARD LOGS AND TRAIN RL AGENT
-    log_path = Path('./training_visualization_tb/dqn_example').resolve()
-    tbCallback = TensorBoard(
-        log_dir=str(log_path), write_graph=True)
+    # # DEFINE TENSORBOARD LOGS
+    # # Note: There are some compatibility issues with this versions of
+    # # tensorbaord higher than 2.3, which is why this block of the example
+    # cannot be used with the most current versions of the fabricatio-controls
+    # # dependencies
+    # log_path = Path('./training_visualization_tb/dqn_example').resolve()
+    # tbCallback = TensorBoard(
+    #     log_dir=str(log_path), write_graph=True)
 
     # start tensorboard and check learning
 
-    dqn.fit(env, nb_steps=5000, callbacks=[tbCallback], visualize=False,
+    dqn.fit(env, nb_steps=5000, # callbacks=[tbCallback],
+            visualize=False,
             verbose=2)
 
     # TEST AGENT
@@ -217,8 +222,8 @@ if __name__ == "__main__":
              visualize=False, nb_max_episode_steps=None,
              nb_max_start_steps=0, verbose=1)
 
-    # START TENSORBOARD
-    # note that these two lines should be executed in a thread
+    # # START TENSORBOARD (see compatibility issues note above.
+    # # these two lines should be executed in a thread
     # different from the training script for live training monitoring
-    system(f'tensorboard --logdir {log_path.parent}')
-    print(f"Tensorflow listening on localhost:6006")
+    # system(f'tensorboard --logdir {log_path.parent}')
+    # print(f"Tensorflow listening on localhost:6006")

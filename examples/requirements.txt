@@ -1,4 +1,3 @@
 keras-rl2==1.0.5
-tensorboard==2.3.0
-tensorflow==2.3.0
+tensorflow==2.6.2
 fabricatio-rl==1.0.0
