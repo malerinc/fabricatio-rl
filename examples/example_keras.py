@@ -1,20 +1,24 @@
+from pathlib import Path
+
 import numpy as np
 import gym
-from gym import register
-from gym_fabrikatioRL.envs.core_state import State
-from gym_fabrikatioRL.envs.interface_templates import (Optimizer,
-                                                       ReturnTransformer)
 
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
-from keras.optimizers import Adam
-from keras.callbacks import TensorBoard
+from fabricatio_rl.core_state import State
+from fabricatio_rl.interface_templates import (Optimizer, ReturnTransformer,
+                                               SchedulingUserInputs)
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation, Flatten
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import TensorBoard
 
 from rl.agents.dqn import DQNAgent
+from rl.policy import BoltzmannQPolicy
 from rl.memory import SequentialMemory
 from rl.callbacks import Callback
 
 from copy import deepcopy
+from os import system
 
 
 class OperationDurationSequencingHeuristic(Optimizer):
@@ -83,8 +87,8 @@ class LDOptimizer(Optimizer):
 
 
 class DQNReturnTransformer(ReturnTransformer):
-    @staticmethod
-    def transform_state(state: State):
+
+    def transform_state(self, state: State):
         O_D = state.matrices.op_duration
         O_P = state.matrices.op_prec_m
         O_T = state.matrices.op_type
@@ -100,8 +104,7 @@ class DQNReturnTransformer(ReturnTransformer):
             M_Ty.flatten(),  L.flatten(), S.flatten(),
             np.array([machine_nr, current_j_nr, simulation_mode])])
 
-    @staticmethod
-    def transform_reward(state: State):
+    def transform_reward(self, state: State, illegal=False, environment=None):
         return state.trackers.utilization_times.mean()
 
 
@@ -113,35 +116,34 @@ if __name__ == "__main__":
     the builtin sampling scheme, sampling functions or direct input as 
     matrix/vector/tensor/dict
     """
-    env_args = {
-        'scheduling_inputs': {
-            'n_jobs': 20,                # n
-            'n_machines': 7,             # m
-            'n_tooling_lvls': 0,         # l
-            'n_types': 5,                # t
-            'min_n_operations': 5,
-            'max_n_operations': 5,       # o
-            'n_jobs_initial': 10,        # jobs with arrival time 0
-            'max_jobs_visible': 10,      # entries in {1 .. n}
+    env_args = dict(
+        scheduling_inputs=[SchedulingUserInputs(
+            n_jobs=20,                # n
+            n_machines=7,             # m
+            n_tooling_lvls=0,         # l
+            n_types=5,                # t
+            min_n_operations=5,
+            max_n_operations=5,       # o
+            n_jobs_initial=10,        # jobs with arrival time 0
+            max_jobs_visible=10,      # entries in {1 .. n}
             # 'Jm','Om', 'POm' or nxoxo adj. matrix + n_operations; default Jm
-            'operation_precedence': 'POm',
+            operation_precedence='POm',
             # '' or nxo matrix (entries in {0 .. t-1})
-            'operation_types': 'Jm',  # deafault_sampling
+            operation_types='Jm',  # deafault_sampling
             # '' or nxo matrix (entries in {1, 2 .. })
-            'machine_distances': 'default_sampling',
-            'machine_capabilities': {
-                1: {1}, 2: {1}, 3: {2, 3}, 4: {3}, 5: {4}, 6: {5}, 7: {3}},
-        },
-        'seeds':
+            machine_distances='default_sampling',
+            machine_capabilities={
+                1: {1}, 2: {1}, 3: {2, 3}, 4: {3}, 5: {4}, 6: {5}, 7: {3}}
+        )],
+        seeds=
             [56513, 30200, 28174, 9792, 63446, 81531, 31016, 5161, 8664, 12399],
-        'return_transformer': DQNReturnTransformer(),
-        'selectable_optimizers':
-            [LPTOptimizer(), SPTOptimizer(), LDOptimizer()],
-    }
+        return_transformer=DQNReturnTransformer(),
+        selectable_optimizers=[LPTOptimizer(), SPTOptimizer(), LDOptimizer()]
+    )
 
-    register(id='fabricatio-v0',
-             entry_point='gym_fabrikatioRL.envs:FabricatioRL', kwargs=env_args)
-    env = gym.make('fabricatio-v0')
+    gym.register(id='fabricatio-v1',
+             entry_point='fabricatio_rl:FabricatioRL', kwargs=env_args)
+    env = gym.make('fabricatio-v1')
     nb_actions = env.action_space.n
 
     # DEFINE AGENT NETWORK
@@ -158,13 +160,19 @@ if __name__ == "__main__":
 
     # DEFINE RL AGENT
     memory = SequentialMemory(limit=1000, window_length=1)
+    policy = BoltzmannQPolicy()
     dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory,
                    nb_steps_warmup=10, enable_dueling_network=True,
-                   target_model_update=1e-3)
+                   target_model_update=1e-3, policy=policy)
     dqn.compile(Adam(lr=1e-3))
 
-    # TRAIN RL AGENT
-    tbCallback = TensorBoard(log_dir='./Graph', write_graph=True)
+    # DEFINE TENSORBOARD LOGS AND TRAIN RL AGENT
+    log_path = Path('./training_visualization_tb/dqn_example').resolve()
+    tbCallback = TensorBoard(
+        log_dir=str(log_path), write_graph=True)
+
+    # start tensorboard and check learning
+
     dqn.fit(env, nb_steps=5000, callbacks=[tbCallback], visualize=False,
             verbose=2)
 
@@ -208,3 +216,9 @@ if __name__ == "__main__":
              callbacks=[MakespanLogger()],
              visualize=False, nb_max_episode_steps=None,
              nb_max_start_steps=0, verbose=1)
+
+    # START TENSORBOARD
+    # note that these two lines should be executed in a thread
+    # different from the training script for live training monitoring
+    system(f'tensorboard --logdir {log_path.parent}')
+    print(f"Tensorflow listening on localhost:6006")

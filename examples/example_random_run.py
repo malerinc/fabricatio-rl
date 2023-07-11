@@ -1,26 +1,25 @@
 import gym
 import numpy as np
 
-from gym import register
-
+from fabricatio_rl.interface_templates import SchedulingUserInputs
 
 if __name__ == "__main__":
-    env_args = {
-        'scheduling_inputs': {
-            'n_jobs': 100,                # n
-            'n_machines': 20,             # m
-            'n_tooling_lvls': 0,          # l
-            'n_types': 20,                # t
-            'min_n_operations': 20,
-            'max_n_operations': 20,       # o
-            'n_jobs_initial': 100,        # jobs with arrival time 0
-            'max_jobs_visible': 100,      # entries in {1 .. n}
-        },
-    }
+    env_args = dict(
+        scheduling_inputs=[SchedulingUserInputs(
+            n_jobs=100,                # n
+            n_machines=20,             # m
+            n_tooling_lvls=0,          # l
+            n_types=20,                # t
+            min_n_operations=20,
+            max_n_operations=20,       # o
+            n_jobs_initial=100,        # jobs with arrival time 0
+            max_jobs_visible=100      # entries in {1 .. n}
+        )],
+    )
 
-    register(id='fabricatio-v0',
-             entry_point='gym_fabrikatioRL.envs:FabricatioRL', kwargs=env_args)
-    env = gym.make('fabricatio-v0')
+    gym.register(id='fabricatio-v1',
+             entry_point='fabricatio_rl:FabricatioRL', kwargs=env_args)
+    env = gym.make('fabricatio-v1')
 
     state, done = env.reset(), False
     while not done:

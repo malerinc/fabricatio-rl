@@ -1,15 +1,15 @@
 import numpy as np
 import gym
 from gym import register
-from gym_fabrikatioRL.envs.core_state import State
-from gym_fabrikatioRL.envs.interface_templates import ReturnTransformer
+from fabricatio_rl.core_state import State
+from fabricatio_rl.interface_templates import ReturnTransformer, \
+    SchedulingUserInputs
 from time import time
 
 
 # DEFINE RETURN TRANSFORMATION OBJECT
 class HeuristicInfo(ReturnTransformer):
-    @staticmethod
-    def transform_state(state: State) -> np.ndarray:
+    def transform_state(self, state: State) -> np.ndarray:
         la, d = state.legal_actions, state.matrices.op_duration
         n, n_j_ops = state.params.n_jobs, state.params.max_n_operations
         return np.array([la, d, n, n_j_ops], dtype=object)
@@ -18,7 +18,7 @@ class HeuristicInfo(ReturnTransformer):
 # DEFINE METHOD IMPLEMENTING HEURISTIC
 def select_action(legal_actions, op_durations, n_jobs, n_j_operations):
     from collections import namedtuple
-    Operation = namedtuple('Oeration', 'index duration')
+    Operation = namedtuple('Operation', ['index', 'duration'])
     ops = []
     wait_flag = n_j_operations * n_jobs
     for action_nr in legal_actions:
@@ -35,25 +35,26 @@ def select_action(legal_actions, op_durations, n_jobs, n_j_operations):
 if __name__ == "__main__":
     # DEFINE ENVIRONMENT PARAMETERS
     seed = 63059
-    env_args = {
-        'scheduling_inputs': {
-            'n_jobs': 100,                # n
-            'n_machines': 20,             # m
-            'n_tooling_lvls': 0,          # l
-            'n_types': 20,                # t
-            'min_n_operations': 20,
-            'max_n_operations': 20,       # o
-            'n_jobs_initial': 100,        # jobs with arrival time 0
-            'max_jobs_visible': 100,      # entries in {1 .. n}
-        },
-        'return_transformer': HeuristicInfo(),
-        'seeds': [seed]
-    }
+    env_args = dict(
+        scheduling_inputs=[SchedulingUserInputs(
+            n_jobs=100,                # n
+            n_machines=20,             # m
+            n_tooling_lvls=0,          # l
+            n_types=20,                # t
+            min_n_operations=20,
+            max_n_operations=20,       # o
+            n_jobs_initial=100,        # jobs with arrival time 0
+            max_jobs_visible=100,      # entries in {1 .. n}
+            name=seed
+        )],
+        return_transformer=HeuristicInfo(),
+        seeds=[seed]
+    )
     # RUN USING HEURISTIC
     start_time = time()
     register(
         id='fabricatio-v0',
-        entry_point='gym_fabrikatioRL.envs:FabricatioRL',
+        entry_point='fabricatio_rl:FabricatioRL',
         kwargs=env_args
     )
     env = gym.make('fabricatio-v0')
