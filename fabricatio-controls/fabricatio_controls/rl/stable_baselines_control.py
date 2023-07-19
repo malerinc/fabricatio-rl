@@ -117,9 +117,9 @@ class StableBaselinesRLControl(Control):
 
     def load(self, model_path: Union[None, str] = None):
         if model_path is None:
-            self.model.load(f'{self.model_path}/best_model.zip')
+            self.model.load(f'{self.model_path}/best_model')
         else:
-            self.model.load(f'{model_path}/best_model.zip', env=None,
+            self.model.load(f'{model_path}/best_model', env=None,
                             custom_objects=None)
             self.model_path = model_path
 

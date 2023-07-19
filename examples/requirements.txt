@@ -1,3 +1,6 @@
+zipp==0.5                  # downgrade because of pthon 3.7.9 incompatibility
+importlib-metadata==4.4    # downgrade because of pthon 3.7.9 incompatibility
+werkzeug==2.2.2            # downgrade because of pthon 3.7.9 incompatibility
 keras-rl2==1.0.5
 tensorflow==2.6.2
 fabricatio-rl==1.0.0

@@ -39,7 +39,7 @@ setup(
     python_requires='>3.6.8',
     install_requires=[
       'gym==0.18.3', 'numpy~=1.19.0', 'pandas==1.1.1', 'scipy==1.5.4',
-      'Flask==2.2.2', 'Flask-RESTful>0.3.8', 'protobuf==3.20.0'
+      'Flask==2.2.2', 'Flask-RESTful>=0.3.9', 'protobuf==3.20.0'
     ],
     description="An Event Discrete Simulation Framework for "
                 "Production Scheduling Problems.",

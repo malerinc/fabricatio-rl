@@ -65,4 +65,4 @@ if __name__ == "__main__":
     # and start it; note that the visualization app can record multiple runs
     # in the same parent directory, provided each run is in its own directory
     app = va.create_app(log_directory)
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
