@@ -13,9 +13,11 @@ The simulation framework was introduced at the 2021 Winter Simulation Conference
 
 <div style="margin-left: 50px; margin-right: 50px">
     <p align="center">
-        <a href="https://youtu.be/Dy3O94YoiHo" title="Link Title"><img width=500 src="figures/wsc_presentation.png" alt="Alternate Text" /></a>
+        <a href="https://youtu.be/Dy3O94YoiHo" title="Link Title">
+            <img width=500 src="figures/wsc_presentation.png" alt="Alternate Text" />
+        </a>
     </p>
-    <p style="text-align: center"> 
+    <p align="center"> 
         <strong> Figure 1:</strong> Talk at the Winter Simulation Conference 2021 
     <p>
 <div>
@@ -74,10 +76,10 @@ You can read more about the different setups in RL scheduling literature
 following the referenced publications.
 
 <div style="margin-left: 50px; margin-right: 50px">
-    <p style="text-align: center">
+    <p align="center">
         <img src="figures/fabRL_alphas.png" alt="alphas" width="700"/>
     </p>
-    <p style="text-align: justify">
+    <p align="justify">
         <strong>Figure 2:</strong> Machine setup 
         (<img src="https://render.githubusercontent.com/render/math?math=\alpha" alt="alpha_hierarchy">) 
         hierarchy in relationtion with FabrikatioRL. 
@@ -90,10 +92,10 @@ following the referenced publications.
 </div>
 
 <div style="margin-left: 50px; margin-right: 50px">
-    <p style="text-align: center">
+    <p align="center">
         <img src="figures/fabRL_betas.png" alt="betas" width="700"/>
     </p>
-   <p style="text-align: justify"> 
+   <p align="justify"> 
         <strong>Figure 3:</strong> Additional constraints 
         (<img src="https://render.githubusercontent.com/render/math?math=\beta" alt="beta">) 
         covered by FabrikatioRL (hatched). Arrows define a generalization 
@@ -107,10 +109,10 @@ following the referenced publications.
 </div>
 
 <div style="margin-left: 50px; margin-right: 50px">
-    <p style="text-align: center">
+    <p align="center">
         <img src="figures/fabRL_gammas.png" alt="gammas" width="700"/>
     </p>
-    <p style="text-align: justify">
+    <p align="justify">
         <strong>Figure 4:</strong> Optimization goal 
         (<img src="https://render.githubusercontent.com/render/math?math=\gamma" alt="gamma">) 
         intermediary variables covered by FabrikatioRL (hatched). 
@@ -129,10 +131,10 @@ Agents are tasked with decision-making (mainly) when operation processing finish
    - [x] Job transport (To which downstream machine is the job sent?)
    - [ ] Transport vehicle selection (Which transport resource carries the operation?)
    <div style="margin-left: 50px; margin-right: 50px">
-        <p style="text-align:  center">
+        <p align="center">
            <img src="figures/decisions_v2-1.png" alt="decisions" width="700"/>
         </p>
-        <p style="text-align: center">
+        <p align="center">
             <strong>Figure 5:</strong> Simulation decision overview.
         </p>
     </div>
@@ -146,14 +148,15 @@ Agents are tasked with decision-making (mainly) when operation processing finish
    - [ ] Indirect vehicle selection <br/>
    The supported direct/indirect action combinations are listed in the overview below
     <div style="margin-left: 50px; margin-right: 50px">
-        <p style="text-align:  center">
+        <p align="center">
            <img src="figures/overview_simulation_modes.png" alt="dec_modes" width="500"/>
         </p>
-        <p style="text-align: justify">
-            <strong>Figure 6:</strong> Simulation mode overview. The simulation mode is configured implicitly by number and type of optimizers passed to the environment initialization function.
+        <p align="justify">
+            <strong>Figure 6:</strong> Simulation mode overview. 
+            The simulation mode is configured implicitly by number and type of 
+            optimizers passed to the environment initialization function.
         </p>
     </div>
-   Figure 5: 
 
 3. Observation space: The observation space can be configured by means of a  
 `ReturnTransformer` object having access to the entire state representation. 
@@ -182,7 +185,7 @@ Here's a peek:
             <img width=500 src="figures/visualization_sneek_peek.png" alt="Alternate Text" />
         </a>
     </p>
-    <p style="text-align: center">
+    <p align="center">
         <strong>Figure 7:</strong> FabricatioRL's visualization app.
     </p>        
 </div>
