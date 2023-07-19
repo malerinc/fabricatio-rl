@@ -273,8 +273,12 @@ Understanding the experiments contained by this repository requires an in depth
 knowledge of the two packages `fabricatio-rl` and `fabricatio-controls` that.
 We plan to convey this knowledge through future publications. 
 
-To run them, simply execute the scripts contained by the `experiments` directory 
-in sequence.
+To run them, first install the additional requirements by running 
+```
+pip install -r requirements.txt 
+```
+from the experiments folder. Then you can simply execute the scripts contained 
+by the `experiments` directory in sequence.
 Note running the experiments to completion may take weeks on an average personal 
 computer. 
  
