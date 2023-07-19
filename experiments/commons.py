@@ -3,7 +3,7 @@ from os import listdir
 from os.path import exists
 from typing import Union, List, Callable, TypeVar
 
-import jsonpickle
+import jsons
 import numpy as np
 from numpy import int32, int64
 
@@ -46,7 +46,7 @@ def log_stable_baselines_run(kwargs, run_logdir):
     logpath = f'{run_logdir}/{kwargs["control_name"]}.log'
     print(f"saving parameter file tp {logpath}")
     with open(logpath, 'w') as f:
-        f.write(jsonpickle.encode(kwargs, indent=4))
+        f.write(jsons.dumps(kwargs, indent=4))
 
 
 def get_model_run_name(model_type_name, run_logdir='1_data/sb_runs'):
