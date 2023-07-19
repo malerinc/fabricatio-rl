@@ -2,6 +2,7 @@ import bisect
 import marshal
 import math
 import numpy as np
+import platform
 
 from inspect import isclass
 from copy import deepcopy
@@ -87,7 +88,10 @@ def create_folders(path):
     segments = path.split('/')
     if not bool(segments):
         return path
-    path_dir = join(*segments[:-1])
+    if platform.system() == "Linux" and segments[0][0] != ".": 
+        path_dir = "/" + join(*segments[:-1])
+    else:   
+        path_dir = join(*segments[:-1])
     file = segments[-1]
     if not exists(path_dir):
         makedirs(path_dir)

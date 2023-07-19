@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from urllib.parse import unquote
+from os.path import join
 
 from flask_restful import Resource, Api
 
@@ -21,7 +21,7 @@ class RunList(Resource):
 
     def get(self):
         logdirs = os.listdir(self.logpaths.logroot)
-        self.logpaths.active_log = f'{self.logpaths.logroot}\\{logdirs[0]}'
+        self.logpaths.active_log = join(self.logpaths.logroot, logdirs[0])
         return jsonify(logdirs)
 
 
@@ -41,8 +41,7 @@ class RunManager(Resource):
         self.logpaths = kwargs['logdirs']
 
     def get(self, logdir):
-        self.logpaths.active_log = (self.logpaths.logroot
-                                    + '\\' + unquote(logdir))
+        self.logpaths.active_log = join(self.logpaths.logroot, logdir)
         return ""
 
 
@@ -51,7 +50,7 @@ class StateData(Resource):
         self.logpaths = kwargs['logdirs']
 
     def get(self, state_id):
-        filename = f'{self.logpaths.active_log}\\{state_id}.json'
+        filename = join(self.logpaths.active_log, str(state_id) + ".json")
         if os.path.isfile(filename):
             with open(filename) as f:
                 data = json.load(f)
