@@ -283,10 +283,10 @@ computer.
 If you use `FabricatioRL` in your research, you can cite it as follows:
 
 ```
-@misc{rinciog2020fabricatio-rl,
-    author = {Rinciog, Alexandru and Meyer Anne},
+@misc{rinciog2023fabricatio-rl,
+    author = {Rinciog, Alexandru and Meyer, Anne},
     title = {FabricatioRL-v2},
-    year = {2021},
+    year = {2023},
     publisher = {GitHub},
     journal = {GitHub Repository},
     howpublished = {\url{https://github.com/malerinc/fabricatio-rl.git}},
