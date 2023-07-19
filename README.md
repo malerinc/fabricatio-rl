@@ -209,7 +209,7 @@ For now, the latest version of `fabricatio-rl` and its controls is not made
 available through `pypi`. 
 As such, to run the contained experiment and example scripts, the "manual" 
 installation process below must be performed. 
-Note that this project was tested with python 3.6 only. 
+These instructions are meant for **Python 3.7.9**.
 Other interpreter versions may lead to unexpected errors. 
 
 ### Installation
