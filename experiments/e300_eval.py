@@ -24,7 +24,7 @@ if __name__ == '__main__':
         test_seeds=eval_seeds,
         log_runs=False,
         results_path=create_folders(
-            f'1_data/results/2_jm_10x14(100)_mcts2_tt_s6000.csv'),
+            f'./1_data/results/2_jm_10x14(100)_mcts2_tt_s6000.csv'),
         n_threads=4  # 40
     ).compare_controls()
 
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         rl_model_names=[
             'dqn__h6A_fea10S_mR__FJc14_100_v4_4',
         ],
-        models_path='../2_models/',
+        models_path='./2_models/',
         control_initializer=init_stable_baselies_control_d2)
     eval_seeds = read_seeds('./1_data/seeds/3_seeds_eval.log')
     Evaluator(
@@ -46,6 +46,6 @@ if __name__ == '__main__':
         test_seeds=eval_seeds,
         log_runs=False,
         results_path=create_folders(
-            f'1_data/results/1_fjc_10x14(100)_mcts2__s6000.csv'),
+            f'./1_data/results/1_fjc_10x14(100)_mcts2__s6000.csv'),
         n_threads=4  # 48  # max 9 for dqn games ;)
     ).compare_controls()

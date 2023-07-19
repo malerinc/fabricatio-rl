@@ -69,7 +69,7 @@ def load_fjc_env_fixed_params(
         seeds = seed
     env_args = dict(
         scheduling_inputs=[SchedulingUserInputs(
-            path="../../benchmarks/fjssp_all/10_10-0.0__10-5.0__orb10v.fjs",
+            path="../benchmarks/fjssp_all/10_10-0.0__10-5.0__orb10v.fjs",
             n_jobs=100,
             max_jobs_visible=14,
             n_jobs_initial=14,
@@ -86,7 +86,7 @@ def load_fjc_env_fixed_params(
 def load_fjc_env(seed: Union[int, List[int]],
                  n_jobs_initial=10, n_jobs_total=100,
                  inter_arrival_time='balanced',
-                 basedir='../../benchmarks/fjssp_all'):
+                 basedir='../benchmarks/fjssp_all'):
     if type(seed) != list:
         assert type(seed) in [int, int32]
         seeds = [seed]
@@ -111,7 +111,7 @@ def load_fjc_env(seed: Union[int, List[int]],
 def load_jm_env(seed: Union[int, List[int]],
                 n_jobs_initial=10, n_jobs_total=100,
                 inter_arrival_time='balanced',
-                basedir='../../benchmarks/fjssp_all'):
+                basedir='../benchmarks/fjssp_all'):
     if type(seed) != list:
         assert type(seed) in [int, int32, int64]
         seeds = [seed]
@@ -141,7 +141,7 @@ def load_jm_env_fixed_params(seed: Union[int, List[int]]):
         seeds = seed
     env_args = dict(
         scheduling_inputs=[SchedulingUserInputs(
-            path=f"../../benchmarks/jssp_all/10_10 __orb10__lb944_ub944.csv",
+            path=f"../benchmarks/jssp_all/10_10 __orb10__lb944_ub944.csv",
             n_jobs=100,
             n_jobs_initial=14,
             max_jobs_visible=14,

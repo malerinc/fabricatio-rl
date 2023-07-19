@@ -382,7 +382,7 @@ if __name__ == "__main__":
     setup = SchedulingSetup.FLEXIBLEJOBSHOP
     new_seeds = get_new_seeds(n_seeds, setup.value)
     basepath = f'./1_data/setup'
-    benchmark_dir = '../../benchmarks/fjssp_all'
+    benchmark_dir = '../benchmarks/fjssp_all'
     seed_partitions, _ = partition_list(np.array(new_seeds), n_threads)
     t0 = time()
     parallelize_heterogeneously(

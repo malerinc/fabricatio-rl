@@ -37,12 +37,12 @@ if __name__ == '__main__':
         AZAgentArgs(
             memlen=10000,
             learning_rate=0.0001,
-            tb_logdir=create_folders('1_data/tensorboard/az_lr-4'),
+            tb_logdir=create_folders('./1_data/tensorboard/az_lr-4'),
             res_blocks=3, res_filters=64, itermax=2, c_puct=2.5, temperature=1,
             stack_size=3
         ),
         baseln_hs="", baseln_hr="", reward_delay=1,
-        models_base_dir=create_folders("2_models/az_lr-4/")
+        models_base_dir=create_folders("./2_models/az_lr-4/")
     )
     az = AZControl(azsa, training_envs, ret_trnsformer, optimizers, 'az')
     trained_model_path = az.train_agent_parallel(10000, 20)
