@@ -63,7 +63,7 @@ def get_model_run_name(model_type_name, run_logdir='1_data/sb_runs'):
 def load_fjc_env_fixed_params(
         seed: Union[int, List[int], np.ndarray]) -> FabricatioRL:
     if type(seed) not in [list, np.ndarray]:
-        assert type(seed) in [int, np.int32]
+        assert type(seed) in [int, np.int32, np.int64]
         seeds = [seed]
     else:
         seeds = seed
@@ -88,7 +88,7 @@ def load_fjc_env(seed: Union[int, List[int]],
                  inter_arrival_time='balanced',
                  basedir='../benchmarks/fjssp_all'):
     if type(seed) != list:
-        assert type(seed) in [int, int32]
+        assert type(seed) in [int, int32, np.int64]
         seeds = [seed]
     else:
         seeds = seed
