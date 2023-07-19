@@ -258,12 +258,12 @@ The experiments follow the standardization framework put forward at the CIRP CMS
 conference 2022 [[4]](#4). The associated talk is linked below.
 
 <div style="margin-left: 50px; margin-right: 50px">
-    <p style="text-align: center">
+    <p align="center">
         <a href="https://youtu.be/fduRz48zfw4" title="Link Title">
             <img width=500 src="figures/cirp_presentation.png" alt="cirp_presentation"/>
         </a>
     </p>
-    <p style="text-align: center">
+    <p align="center">
         <strong>Figure 8:</strong> CIRP CMS 2022 talk on RL Experiment Standardization.
     </p>
 </div>
